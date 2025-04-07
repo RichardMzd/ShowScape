@@ -22,7 +22,6 @@ struct ContentView: View {
                     ScrollView(.vertical) {
                         Spacer().frame(height: 20)
                         
-//                        nouvelle func
                         if !searchText.isEmpty {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text("Résultats pour « \(searchText) »")
