@@ -15,7 +15,7 @@ class NetworkService {
     
     private let apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YmVmNzllN2Y0NTYwNmY5MzhjMjhkY2U1MGUyMjFiMSIsIm5iZiI6MTcyMjk1NDA2OC42NjQ1NSwic3ViIjoiNjA5Mjk0ODAzZjhlZGUwMDU4YTIyY2Y1Iiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.JKkS32UCE0UOkGqDTtohYrONGsX2jQGsZrK6fiHrTXA"
     
-    func fetchNowPlayingsPosts(page: Int) -> AnyPublisher<[Result], Error> {
+    func fetchNowPlayingsPosts(page: Int) -> AnyPublisher<[Movie], Error> {
         
         var components = URLComponents(string: "https://api.themoviedb.org/3/trending/all/day")!
             components.queryItems = [
@@ -23,7 +23,6 @@ class NetworkService {
                 URLQueryItem(name: "page", value: "\(page)")
             ]
         
-
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -44,7 +43,7 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
     
-    func fetchPopularPosts(page: Int) -> AnyPublisher<[Result], Error> {
+    func fetchPopularPosts(page: Int) -> AnyPublisher<[Movie], Error> {
       
         var components = URLComponents(string: "https://api.themoviedb.org/3/movie/top_rated")!
             components.queryItems = [
@@ -72,7 +71,7 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
 
-    func fetchUpcomingPosts(page: Int) -> AnyPublisher<[Result], Error> {
+    func fetchUpcomingPosts(page: Int) -> AnyPublisher<[Movie], Error> {
         
         var components = URLComponents(string: "https://api.themoviedb.org/3/movie/upcoming")!
             components.queryItems = [
@@ -100,7 +99,7 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
     
-    func searchMovies(query: String) -> AnyPublisher<[Result], Error> {
+    func searchMovies(query: String) -> AnyPublisher<[Movie], Error> {
         var components = URLComponents(string: "https://api.themoviedb.org/3/search/multi")!
         components.queryItems = [
             URLQueryItem(name: "query", value: query),

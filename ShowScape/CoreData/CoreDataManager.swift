@@ -5,7 +5,6 @@
 //  Created by Richard Arif Mazid on 07/04/2025.
 //
 
-import Foundation
 import CoreData
 
 class CoreDataManager {
@@ -28,12 +27,15 @@ class CoreDataManager {
 
     func saveContext() {
         if context.hasChanges {
-            try? context.save()
+            do {
+                try context.save()
+            } catch {
+                print("Erreur lors de la sauvegarde du contexte : \(error.localizedDescription)")
+            }
         }
     }
 
-    // 🔽 Ajout
-    func addFavorite(movie: Result) {
+    func addFavorite(movie: Movie) {
         let favorite = Favorite(context: context)
         favorite.id = Int64(movie.id)
         favorite.title = movie.title
@@ -42,31 +44,42 @@ class CoreDataManager {
         saveContext()
     }
 
-    // 🔽 Suppression
-    func removeFavorite(id: Int) {
+    func removeFavorite(id: Int64) {
         let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", String(id))
+        fetchRequest.predicate = NSPredicate(format: "id == %@", NSNumber(value: id))
 
-        if let favorites = try? context.fetch(fetchRequest) {
+        do {
+            let favorites = try context.fetch(fetchRequest)
             for favorite in favorites {
                 context.delete(favorite)
             }
             saveContext()
+        } catch {
+            print("Erreur lors de la suppression du favori : \(error.localizedDescription)")
         }
     }
 
-    // 🔽 Vérification
-    func isFavorite(id: Int) -> Bool {
+    func isFavorite(id: Int64) -> Bool {
         let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", String(id))
-        let count = (try? context.count(for: fetchRequest)) ?? 0
-        return count > 0
+        fetchRequest.predicate = NSPredicate(format: "id == %@", NSNumber(value: id))
+        do {
+            let count = try context.count(for: fetchRequest)
+            return count > 0
+        } catch {
+            print("Erreur lors de la vérification du favori : \(error.localizedDescription)")
+            return false
+        }
     }
 
-    // 🔽 Récupération
     func fetchFavorites() -> [Favorite] {
         let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
-        return (try? context.fetch(fetchRequest)) ?? []
+        do {
+            return try context.fetch(fetchRequest) // Retourne des objets `Favorite` directement
+        } catch {
+            return [] // En cas d'erreur, retourne un tableau vide
+        }
     }
+
 }
+
 

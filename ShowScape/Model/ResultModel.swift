@@ -11,7 +11,7 @@ import Foundation
 struct ResultModel: Codable {
     let dates: Dates?
     let page: Int?
-    let results: [Result]?
+    let results: [Movie]?
     let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -25,7 +25,7 @@ struct Dates: Codable {
     let maximum, minimum: String?
 }
 
-struct Result: Codable, Identifiable, Hashable {
+struct Movie: Codable, Identifiable, Hashable {
     let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]?
@@ -68,8 +68,5 @@ struct Actor: Identifiable, Codable, Hashable {
 struct MovieCredits: Codable {
     let cast: [Actor]
 }
-
-
-
 
 

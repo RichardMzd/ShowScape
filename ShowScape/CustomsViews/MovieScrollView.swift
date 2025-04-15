@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MovieScrollView<Destination: View>: View {
-    var movies: [Result]
-    var destination: (Result) -> Destination
+    var movies: [Movie]
+    var destination: (Movie) -> Destination
     
     @StateObject var movieViewModel = MovieViewModel()
     
@@ -89,9 +89,9 @@ struct MovieScrollView<Destination: View>: View {
 }
 
 // Extension pour créer un mock
-extension Result {
-    static func mock() -> Result {
-        return Result(adult: true,
+extension Movie {
+    static func mock() -> Movie {
+        return Movie(adult: true,
                       backdropPath: "movie",
                       genreIDS: [12],
                       id: 1,
@@ -111,8 +111,8 @@ extension Result {
 // Prévisualisation avec des données mock
 struct MovieScrollView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieScrollView(movies: [Result.mock(), Result.mock(), Result.mock()]) { movie in
-            DetailsView(isPresented: .constant(false), movie: movie) // Assurez-vous que `DetailsView` accepte `Result` comme argument
+        MovieScrollView(movies: [Movie.mock(), Movie.mock(), Movie.mock()]) { movie in
+            DetailsView(isPresented: .constant(false), movie: movie, isFromFavorites: true) // Assurez-vous que `DetailsView` accepte `Result` comme argument
         }
     }
 }

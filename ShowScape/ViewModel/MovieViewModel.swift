@@ -10,11 +10,11 @@ import Combine
 
 class MovieViewModel: ObservableObject {
     
-    @Published var movies: [Result] = [] // Tableau vide de films qui sera rempli via les fonctions dans NetworkService.
-    @Published var nowAiring: [Result] = []
-    @Published var popular: [Result] = []
+    @Published var movies: [Movie] = [] // Tableau vide de films qui sera rempli via les fonctions dans NetworkService.
+    @Published var nowAiring: [Movie] = []
+    @Published var popular: [Movie] = []
     @Published var movieCredits: MovieCredits? // Stocke les crédits du film sélectionné
-    @Published var searchResults: [Result] = []
+    @Published var searchResults: [Movie] = []
     
     private var cancellables = Set<AnyCancellable>()
     var currentPage = 1
@@ -113,7 +113,7 @@ class MovieViewModel: ObservableObject {
     //        }
     //    }
     
-    func loadMoreMoviesIfNeeded(currentMovie: Result, movies: [Result], loadMoreFunction: () -> Void) {
+    func loadMoreMoviesIfNeeded(currentMovie: Movie, movies: [Movie], loadMoreFunction: () -> Void) {
         guard let lastMovie = movies.last else { return }
         if currentMovie.id == lastMovie.id {
             loadMoreFunction()
